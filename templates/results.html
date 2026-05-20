@@ -19,86 +19,72 @@
     .btn-back { background: rgba(255,255,255,0.12); color: white; border: 1px solid rgba(255,255,255,0.25); border-radius: 7px; padding: 9px 20px; font-size: 0.86rem; cursor: pointer; text-decoration: none; transition: background 0.2s; }
     .btn-back:hover { background: rgba(255,255,255,0.22); }
 
-    .page { max-width: 1400px; margin: 0 auto; padding: 32px 32px 60px; }
+    .page { max-width: 1500px; margin: 0 auto; padding: 28px 32px 60px; }
 
     /* Summary banner */
-    .summary-banner { background: white; border-radius: 12px; padding: 20px 32px; margin-bottom: 28px; box-shadow: 0 2px 14px rgba(30,58,95,0.09); display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+    .summary-banner { background: white; border-radius: 12px; padding: 18px 28px; margin-bottom: 24px; box-shadow: 0 2px 14px rgba(30,58,95,0.09); display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
     .banner-item { display: flex; flex-direction: column; gap: 3px; }
     .banner-item .label { font-size: 0.72rem; color: #7a9ab8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; }
-    .banner-item .value { font-size: 1.05rem; font-weight: 700; color: #1e3a5f; }
-    .banner-divider { width: 1px; height: 38px; background: #dce8f0; }
+    .banner-item .value { font-size: 1rem; font-weight: 700; color: #1e3a5f; }
+    .banner-divider { width: 1px; height: 36px; background: #dce8f0; }
 
     .badge { display: inline-block; padding: 3px 11px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; }
     .badge-sub { background: #fff3e0; color: #e65100; }
     .badge-ins { background: #e8f5e9; color: #2e7d32; }
     .badge-del { background: #fce4ec; color: #b71c1c; }
 
-    /* Main grid — 3 columns top, 2 columns bottom */
-    .grid-main { display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px; margin-bottom: 24px; }
-    .grid-lower { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
-    .grid-full  { margin-bottom: 24px; }
+    /* ── ROW 1: 3D viewer | Mutation table | UniProt — 3 equal columns ── */
+    .grid-row1 { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 22px; margin-bottom: 22px; }
 
-    @media (max-width: 1000px) { .grid-main, .grid-lower { grid-template-columns: 1fr; } }
+    /* ── ROW 2: Mutation chart | AA changes | Protein sequences — 3 columns ── */
+    .grid-row2 { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 22px; margin-bottom: 22px; }
+
+    @media (max-width: 1100px) {
+      .grid-row1, .grid-row2 { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 700px) {
+      .grid-row1, .grid-row2 { grid-template-columns: 1fr; }
+    }
 
     .panel { background: white; border-radius: 14px; box-shadow: 0 2px 14px rgba(30,58,95,0.09); overflow: hidden; }
-    .panel-header { background: #1e3a5f; color: white; padding: 14px 22px; font-size: 0.92rem; font-weight: 700; display: flex; align-items: center; gap: 9px; }
+    .panel-header { background: #1e3a5f; color: white; padding: 13px 20px; font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; gap: 9px; }
     .panel-header .icon { width: 24px; height: 24px; background: rgba(255,255,255,0.15); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; }
-    .panel-body { padding: 22px; }
+    .panel-body { padding: 18px; }
 
-    /* 3D viewer — taller */
-    #viewer-container { width: 100%; height: 460px; background: #0d1b2a; border-radius: 10px; position: relative; }
-    .viewer-label { position: absolute; bottom: 12px; left: 14px; background: rgba(0,0,0,0.6); color: #a8c4e0; font-size: 0.72rem; padding: 5px 12px; border-radius: 5px; pointer-events: none; }
-    .pdb-badge { position: absolute; top: 12px; right: 14px; background: #3a9bd5; color: white; font-size: 0.74rem; font-weight: 700; padding: 5px 12px; border-radius: 5px; }
+    /* 3D viewer */
+    #viewer-container { width: 100%; height: 420px; background: #0d1b2a; border-radius: 10px; position: relative; }
+    .viewer-label { position: absolute; bottom: 10px; left: 12px; background: rgba(0,0,0,0.6); color: #a8c4e0; font-size: 0.7rem; padding: 4px 10px; border-radius: 5px; pointer-events: none; }
+    .pdb-badge { position: absolute; top: 10px; right: 12px; background: #3a9bd5; color: white; font-size: 0.72rem; font-weight: 700; padding: 4px 10px; border-radius: 5px; }
 
-    /* Mutation table */
-    table { width: 100%; border-collapse: collapse; font-size: 0.87rem; }
+    /* Table */
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
     thead tr { background: #f0f6fb; }
-    thead th { padding: 11px 14px; text-align: left; font-weight: 700; color: #2c4a6e; font-size: 0.81rem; border-bottom: 2px solid #dce8f0; }
+    thead th { padding: 10px 12px; text-align: left; font-weight: 700; color: #2c4a6e; font-size: 0.79rem; border-bottom: 2px solid #dce8f0; }
     tbody tr { border-bottom: 1px solid #edf2f7; }
     tbody tr:last-child { border-bottom: none; }
     tbody tr:hover { background: #f7fafd; }
-    tbody td { padding: 11px 14px; color: #2c3e50; }
+    tbody td { padding: 10px 12px; color: #2c3e50; }
     .mono { font-family: 'Courier New', monospace; font-weight: 700; }
 
-    /* Structural impact panel */
-    .impact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
-    .impact-card { border-radius: 10px; padding: 14px 16px; }
-    .impact-card.red    { background: #fff0f0; border: 1px solid #ffcdd2; }
-    .impact-card.orange { background: #fff8f0; border: 1px solid #ffe0b2; }
-    .impact-card.blue   { background: #f0f7ff; border: 1px solid #bbdefb; }
-    .impact-card.purple { background: #f8f0ff; border: 1px solid #e1bee7; }
-    .impact-card .ic-title { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-    .impact-card.red    .ic-title { color: #c62828; }
-    .impact-card.orange .ic-title { color: #e65100; }
-    .impact-card.blue   .ic-title { color: #1565c0; }
-    .impact-card.purple .ic-title { color: #6a1b9a; }
-    .impact-card .ic-text { font-size: 0.84rem; color: #2c3e50; line-height: 1.5; }
-
-    .impact-summary { background: #f0f4f8; border-radius: 10px; padding: 16px 18px; font-size: 0.87rem; color: #1a2332; line-height: 1.7; border-left: 4px solid #e74c3c; }
-    .impact-severity { display: inline-block; padding: 4px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 12px; }
-    .severity-high    { background: #ffebee; color: #b71c1c; }
-    .severity-medium  { background: #fff3e0; color: #e65100; }
-    .severity-low     { background: #e8f5e9; color: #2e7d32; }
-
-    /* UniProt panel */
-    .info-row { display: flex; gap: 12px; margin-bottom: 14px; align-items: flex-start; }
-    .info-label { font-size: 0.79rem; font-weight: 700; color: #7a9ab8; min-width: 90px; margin-top: 1px; }
-    .info-value { font-size: 0.89rem; color: #1a2332; line-height: 1.5; flex: 1; }
+    /* UniProt */
+    .info-row { display: flex; gap: 10px; margin-bottom: 13px; align-items: flex-start; }
+    .info-label { font-size: 0.77rem; font-weight: 700; color: #7a9ab8; min-width: 76px; margin-top: 1px; }
+    .info-value { font-size: 0.86rem; color: #1a2332; line-height: 1.5; flex: 1; }
 
     /* AA changes */
-    .aa-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-radius: 8px; margin-bottom: 8px; background: #f7fafd; border: 1px solid #dce8f0; font-size: 0.86rem; }
-    .aa-pos { color: #7a9ab8; font-size: 0.79rem; }
-    .aa-change { font-family: monospace; font-weight: 700; color: #c0392b; font-size: 0.92rem; }
+    .aa-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 12px; border-radius: 8px; margin-bottom: 7px; background: #f7fafd; border: 1px solid #dce8f0; font-size: 0.84rem; }
+    .aa-pos { color: #7a9ab8; font-size: 0.77rem; }
+    .aa-change { font-family: monospace; font-weight: 700; color: #c0392b; font-size: 0.9rem; }
 
-    /* Sequence comparison */
-    .seq-row { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 10px; }
-    .seq-label { font-size: 0.75rem; font-weight: 700; color: #7a9ab8; min-width: 38px; margin-top: 3px; }
-    .seq-text { font-family: 'Courier New', monospace; font-size: 0.8rem; color: #1a2332; background: #f0f6fb; border-radius: 7px; padding: 10px 12px; word-break: break-all; line-height: 1.8; flex: 1; }
+    /* Sequences */
+    .seq-row { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 10px; }
+    .seq-label { font-size: 0.74rem; font-weight: 700; color: #7a9ab8; min-width: 36px; margin-top: 3px; }
+    .seq-text { font-family: 'Courier New', monospace; font-size: 0.77rem; color: #1a2332; background: #f0f6fb; border-radius: 7px; padding: 9px 11px; word-break: break-all; line-height: 1.8; flex: 1; max-height: 160px; overflow-y: auto; }
 
-    /* Mutation chart */
-    #mutation-chart { width: 100%; height: 280px; }
+    /* Chart */
+    #mutation-chart { width: 100%; height: 320px; }
 
-    .warn-box { background: #fff8e1; border: 1px solid #ffe082; border-radius: 9px; padding: 14px 18px; font-size: 0.84rem; color: #795548; }
+    .warn-box { background: #fff8e1; border: 1px solid #ffe082; border-radius: 9px; padding: 13px 16px; font-size: 0.83rem; color: #795548; }
 
     footer { text-align: center; padding: 22px; font-size: 0.79rem; color: #8aabbf; }
   </style>
@@ -125,25 +111,26 @@
     <div class="banner-item"><span class="label">Mutations found</span><span class="value">{{ mutations | length }}</span></div>
     <div class="banner-divider"></div>
     <div class="banner-item"><span class="label">Sequence length</span><span class="value">{{ seq_length }} bp</span></div>
-    {% if pdb_id %}<div class="banner-divider"></div>
-    <div class="banner-item"><span class="label">PDB ID</span><span class="value">{{ pdb_id }}</span></div>{% endif %}
-    {% if uniprot_info.organism %}<div class="banner-divider"></div>
-    <div class="banner-item"><span class="label">Organism</span><span class="value">{{ uniprot_info.organism }}</span></div>{% endif %}
-    {% if impact %}<div class="banner-divider"></div>
-    <div class="banner-item"><span class="label">Impact</span>
-      <span class="value" style="color:{% if impact.severity=='High' %}#c62828{% elif impact.severity=='Medium' %}#e65100{% else %}#2e7d32{% endif %}">{{ impact.severity }}</span>
-    </div>{% endif %}
+    {% if pdb_id %}
+    <div class="banner-divider"></div>
+    <div class="banner-item"><span class="label">PDB ID</span><span class="value">{{ pdb_id }}</span></div>
+    {% endif %}
+    {% if uniprot_info.organism %}
+    <div class="banner-divider"></div>
+    <div class="banner-item"><span class="label">Organism</span><span class="value">{{ uniprot_info.organism }}</span></div>
+    {% endif %}
   </div>
 
-  <!-- Row 1: 3D Viewer (larger) + Mutation Table -->
-  <div class="grid-main">
+  <!-- ROW 1: 3D Viewer | Mutation Table | UniProt Info -->
+  <div class="grid-row1">
 
+    <!-- 3D Viewer -->
     <div class="panel">
-      <div class="panel-header"><div class="icon">3D</div>3D Protein Structure — Mutation Site Highlighted in Red</div>
-      <div class="panel-body" style="padding:16px;">
+      <div class="panel-header"><div class="icon">3D</div>3D Protein Structure — Mutation in Red</div>
+      <div class="panel-body" style="padding:14px;">
         {% if pdb_structure %}
         <div id="viewer-container">
-          <div class="viewer-label">🖱 Rotate · Scroll to Zoom · Red = mutation site</div>
+          <div class="viewer-label">🖱 Rotate · Scroll to zoom · Red = mutation site</div>
           <div class="pdb-badge">{{ pdb_id }}</div>
         </div>
         {% elif pdb_error %}
@@ -154,77 +141,30 @@
       </div>
     </div>
 
-    <div style="display:flex;flex-direction:column;gap:24px;">
-      <div class="panel">
-        <div class="panel-header"><div class="icon">≡</div>Mutation Summary</div>
-        <div class="panel-body" style="padding:0;">
-          <table>
-            <thead><tr><th>#</th><th>Position</th><th>Type</th><th>Change</th><th>AA Change</th></tr></thead>
-            <tbody>
-              {% for m in mutations %}
-              <tr>
-                <td>{{ loop.index }}</td>
-                <td class="mono">{{ m.position }}</td>
-                <td><span class="badge {% if m.type=='substitution' %}badge-sub{% elif m.type=='insertion' %}badge-ins{% else %}badge-del{% endif %}">{{ m.type }}</span></td>
-                <td class="mono">{{ m.ref_base }} → {{ m.mut_base }}</td>
-                <td>{{ m.aa_change or '—' }}</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {% if aa_changes %}
-      <div class="panel">
-        <div class="panel-header"><div class="icon">AA</div>Amino Acid Changes</div>
-        <div class="panel-body">
-          {% for ch in aa_changes %}
-          <div class="aa-row">
-            <span class="aa-pos">Position {{ ch.position }}</span>
-            <span class="aa-change">{{ ch.change }}</span>
-          </div>
-          {% endfor %}
-        </div>
-      </div>
-      {% endif %}
-    </div>
-
-  </div>
-
-  <!-- Row 2: Structural Impact + UniProt -->
-  <div class="grid-lower">
-
-    {% if impact %}
+    <!-- Mutation Table -->
     <div class="panel">
-      <div class="panel-header"><div class="icon">⚠</div>Structural & Functional Impact Prediction</div>
-      <div class="panel-body">
-        <span class="impact-severity severity-{% if impact.severity=='High' %}high{% elif impact.severity=='Medium' %}medium{% else %}low{% endif %}">
-          {{ impact.severity }} Impact
-        </span>
-        <div class="impact-grid">
-          <div class="impact-card red">
-            <div class="ic-title">🧬 Mutation Type</div>
-            <div class="ic-text">{{ impact.mutation_type }}</div>
-          </div>
-          <div class="impact-card orange">
-            <div class="ic-title">🔄 AA Property Change</div>
-            <div class="ic-text">{{ impact.property_change }}</div>
-          </div>
-          <div class="impact-card blue">
-            <div class="ic-title">🏗 Structural Effect</div>
-            <div class="ic-text">{{ impact.structural_effect }}</div>
-          </div>
-          <div class="impact-card purple">
-            <div class="ic-title">⚙ Functional Effect</div>
-            <div class="ic-text">{{ impact.functional_effect }}</div>
-          </div>
-        </div>
-        <div class="impact-summary">{{ impact.summary }}</div>
+      <div class="panel-header"><div class="icon">≡</div>Mutation Summary</div>
+      <div class="panel-body" style="padding:0;">
+        <table>
+          <thead>
+            <tr><th>#</th><th>Position</th><th>Type</th><th>Change</th><th>AA Change</th></tr>
+          </thead>
+          <tbody>
+            {% for m in mutations %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td class="mono">{{ m.position }}</td>
+              <td><span class="badge {% if m.type=='substitution' %}badge-sub{% elif m.type=='insertion' %}badge-ins{% else %}badge-del{% endif %}">{{ m.type }}</span></td>
+              <td class="mono">{{ m.ref_base }} → {{ m.mut_base }}</td>
+              <td>{{ m.aa_change or '—' }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     </div>
-    {% endif %}
 
+    <!-- UniProt Info -->
     <div class="panel">
       <div class="panel-header"><div class="icon">i</div>UniProt Protein Info</div>
       <div class="panel-body">
@@ -243,26 +183,46 @@
 
   </div>
 
-  <!-- Row 3: Mutation chart -->
-  <div class="grid-full">
+  <!-- ROW 2: Mutation Chart | AA Changes | Protein Sequences -->
+  <div class="grid-row2">
+
+    <!-- Mutation Position Chart -->
     <div class="panel">
       <div class="panel-header"><div class="icon">↗</div>Mutation Position Chart</div>
       <div class="panel-body"><div id="mutation-chart"></div></div>
     </div>
-  </div>
 
-  <!-- Row 4: Translated sequences -->
-  {% if ref_protein or mut_protein %}
-  <div class="grid-full">
+    <!-- AA Changes -->
+    <div class="panel">
+      <div class="panel-header"><div class="icon">AA</div>Amino Acid Changes</div>
+      <div class="panel-body">
+        {% if aa_changes %}
+          {% for ch in aa_changes %}
+          <div class="aa-row">
+            <span class="aa-pos">Position {{ ch.position }}</span>
+            <span class="aa-change">{{ ch.change }}</span>
+          </div>
+          {% endfor %}
+        {% else %}
+          <div class="warn-box">No amino acid changes detected.</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Translated Protein Sequences -->
     <div class="panel">
       <div class="panel-header"><div class="icon">~</div>Translated Protein Sequences</div>
       <div class="panel-body">
+        {% if ref_protein or mut_protein %}
         <div class="seq-row"><span class="seq-label">REF</span><div class="seq-text">{{ ref_protein or 'Translation failed' }}</div></div>
         <div class="seq-row"><span class="seq-label">MUT</span><div class="seq-text">{{ mut_protein or 'Translation failed' }}</div></div>
+        {% else %}
+        <div class="warn-box">Translation not available.</div>
+        {% endif %}
       </div>
     </div>
+
   </div>
-  {% endif %}
 
 </div>
 
@@ -290,7 +250,8 @@ var chartData = {{ chart_data | safe }};
 var colorMap = { substitution: '#e67e22', insertion: '#27ae60', deletion: '#e74c3c' };
 var colors = chartData.types.map(t => colorMap[t] || '#3a9bd5');
 Plotly.newPlot('mutation-chart', [{
-  x: chartData.positions, y: Array(chartData.positions.length).fill(1),
+  x: chartData.positions,
+  y: Array(chartData.positions.length).fill(1),
   mode: 'markers+text', type: 'scatter',
   marker: { size: 16, color: colors, symbol: 'diamond', line: { width: 2, color: 'white' } },
   text: chartData.labels, textposition: 'top center',

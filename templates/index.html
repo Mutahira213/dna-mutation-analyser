@@ -12,41 +12,34 @@
     header h1 { font-size: 1.6rem; font-weight: 700; }
     header p  { font-size: 0.85rem; color: #a8c4e0; margin-top: 3px; }
     main { flex: 1; display: flex; align-items: flex-start; justify-content: center; padding: 48px 24px; }
-    .card { background: white; border-radius: 16px; box-shadow: 0 6px 32px rgba(30,58,95,0.12); padding: 48px 52px; width: 100%; max-width: 760px; }
+
+    .card { background: white; border-radius: 16px; box-shadow: 0 6px 32px rgba(30,58,95,0.12); padding: 48px 52px; width: 100%; max-width: 1100px; }
     .card h2 { font-size: 1.3rem; font-weight: 700; color: #1e3a5f; margin-bottom: 8px; }
-    .card .subtitle { font-size: 0.9rem; color: #5a7a99; margin-bottom: 32px; line-height: 1.6; }
-    .form-group { margin-bottom: 26px; }
+    .card .subtitle { font-size: 0.9rem; color: #5a7a99; margin-bottom: 36px; line-height: 1.6; }
+
+    /* Horizontal 3-column layout for the form */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 28px; margin-bottom: 28px; }
+    .form-group { display: flex; flex-direction: column; }
+
     label { display: block; font-size: 0.92rem; font-weight: 600; color: #2c4a6e; margin-bottom: 8px; }
-    label span { font-weight: 400; color: #7a9ab8; font-size: 0.84rem; margin-left: 6px; }
-    .input-tabs { display: flex; margin-bottom: 10px; border: 1.5px solid #c8d8e8; border-radius: 8px; overflow: hidden; width: fit-content; }
-    .input-tab { padding: 7px 18px; font-size: 0.82rem; font-weight: 600; cursor: pointer; border: none; background: #f7fafd; color: #7a9ab8; transition: all 0.2s; }
-    .input-tab.active { background: #1e3a5f; color: white; }
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
+    label span { font-weight: 400; color: #7a9ab8; font-size: 0.84rem; display: block; margin-top: 2px; }
+
     textarea, input[type="text"] { width: 100%; border: 1.5px solid #c8d8e8; border-radius: 8px; padding: 12px 16px; font-family: 'Courier New', monospace; font-size: 0.88rem; color: #1a2332; background: #f7fafd; transition: border-color 0.2s, box-shadow 0.2s; resize: vertical; }
     textarea:focus, input[type="text"]:focus { outline: none; border-color: #3a9bd5; box-shadow: 0 0 0 3px rgba(58,155,213,0.12); background: white; }
-    textarea { min-height: 100px; }
-    input[type="text"] { font-family: 'Segoe UI', sans-serif; }
-    .file-drop { border: 2px dashed #c8d8e8; border-radius: 8px; padding: 28px; text-align: center; background: #f7fafd; cursor: pointer; transition: all 0.2s; position: relative; }
-    .file-drop:hover, .file-drop.dragover { border-color: #3a9bd5; background: #eef6fd; }
-    .file-drop input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-    .file-drop .file-icon { font-size: 2rem; margin-bottom: 8px; }
-    .file-drop .file-text { font-size: 0.85rem; color: #5a7a99; }
-    .file-drop .file-text strong { color: #3a9bd5; }
-    .file-name { margin-top: 8px; font-size: 0.82rem; color: #2e7d32; font-weight: 600; display: none; }
+    textarea { min-height: 200px; }
+    input[type="text"] { font-family: 'Segoe UI', sans-serif; height: 48px; }
+
     .error-box { background: #fff0f0; border: 1.5px solid #f0a0a0; border-radius: 8px; padding: 14px 18px; margin-bottom: 26px; }
     .error-box p { font-size: 0.87rem; color: #c0392b; margin: 4px 0; }
     .error-box p::before { content: "⚠ "; }
     .hint { font-size: 0.79rem; color: #7a9ab8; margin-top: 6px; }
-    .btn-submit { width: 100%; background: #1e3a5f; color: white; border: none; border-radius: 10px; padding: 15px; font-size: 1rem; font-weight: 700; cursor: pointer; letter-spacing: 0.3px; transition: background 0.2s, transform 0.1s; margin-top: 8px; }
+
+    .btn-submit { width: 100%; background: #1e3a5f; color: white; border: none; border-radius: 10px; padding: 15px; font-size: 1rem; font-weight: 700; cursor: pointer; letter-spacing: 0.3px; transition: background 0.2s, transform 0.1s; }
     .btn-submit:hover { background: #2a5080; }
     .btn-submit:active { transform: scale(0.99); }
-    .example-box { background: #f0f7ff; border: 1px solid #c8dff5; border-radius: 10px; padding: 18px 22px; margin-bottom: 30px; }
-    .example-box .ex-title { font-size: 0.85rem; color: #3a6a99; margin-bottom: 6px; font-weight: 700; }
-    .example-box code { font-size: 0.79rem; color: #1e3a5f; display: block; margin: 2px 0; }
-    .example-box .ex-desc { font-size: 0.79rem; color: #5a7a99; margin-top: 8px; margin-bottom: 10px; line-height: 1.5; }
-    .example-box button { background: #3a9bd5; color: white; border: none; border-radius: 7px; padding: 8px 20px; font-size: 0.83rem; cursor: pointer; font-weight: 600; }
-    .example-box button:hover { background: #2a82bc; }
+
+    @media (max-width: 860px) { .form-row { grid-template-columns: 1fr; } }
+
     footer { text-align: center; padding: 18px; font-size: 0.79rem; color: #8aabbf; }
   </style>
 </head>
@@ -55,13 +48,13 @@
   <div class="logo">D</div>
   <div>
     <h1>DNA Mutation Analyser</h1>
-    <p>Align · Detect · Translate · Visualise in 3D · Predict Structural Impact</p>
+    <p>Align · Detect · Translate · Visualise in 3D</p>
   </div>
 </header>
 <main>
   <div class="card">
     <h2>Analyse a DNA Mutation</h2>
-    <p class="subtitle">Upload FASTA / TXT files or paste DNA sequences directly. The system will align, detect mutations, translate to protein, render the 3D structure, and predict the structural and functional impact.</p>
+    <p class="subtitle">Enter your reference and mutant DNA sequences alongside the protein name. The system will align the sequences, detect mutations, translate to protein, and render the 3D structure with the mutation highlighted.</p>
 
     {% if errors %}
     <div class="error-box">
@@ -69,60 +62,27 @@
     </div>
     {% endif %}
 
-    <div class="example-box">
-      <p class="ex-title">🧬 Real example — TP53 R175H (most common cancer mutation)</p>
-      <code>Ref: ATGGATTTCCAGTTCAGGGCCAGCTACAGT... (TP53 wild-type CDS)</code>
-      <code>Mut: Same sequence with G→C at position 523 (codon 175: CGT→CAT)</code>
-      <code>Protein: TP53</code>
-      <p class="ex-desc">TP53 is mutated in >50% of all human cancers. R175H is the most frequent hotspot mutation — it disrupts the zinc-binding domain, collapses the DNA-binding loop, and completely abolishes tumour suppression. PDB: 2OCJ · UniProt: P04637</p>
-      <button onclick="loadExample()">Load TP53 R175H example</button>
-    </div>
+    <form action="/submit" method="POST">
+      <div class="form-row">
 
-    <form action="/submit" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="ref_dna">Reference DNA sequence <span>normal / wild-type</span></label>
+          <textarea name="ref_dna" id="ref_dna" placeholder="ATGCGTAAAGGTCCAATCGTAGCT...&#10;&#10;Use only A, T, G, C characters.">{{ ref_dna or '' }}</textarea>
+          <p class="hint">Wild-type / unmodified sequence. A, T, G, C only.</p>
+        </div>
 
-      <div class="form-group">
-        <label>Reference DNA sequence <span>normal / wild-type</span></label>
-        <div class="input-tabs">
-          <button type="button" class="input-tab active" onclick="switchTab('ref','paste')">Paste sequence</button>
-          <button type="button" class="input-tab" onclick="switchTab('ref','file')">Upload file</button>
+        <div class="form-group">
+          <label for="mut_dna">Mutant DNA sequence <span>changed / variant</span></label>
+          <textarea name="mut_dna" id="mut_dna" placeholder="ATGCATAAAGGTCCAATCGTAGCT...&#10;&#10;Sequence with the mutation applied.">{{ mut_dna or '' }}</textarea>
+          <p class="hint">Modified sequence with the mutation applied.</p>
         </div>
-        <div id="ref-paste" class="tab-panel active">
-          <textarea name="ref_dna" id="ref_dna" placeholder="ATGGATTTCCAGTTCAGGGCC...&#10;(FASTA headers starting with > are ignored automatically)">{{ ref_dna or '' }}</textarea>
-          <p class="hint">Accepts plain sequence or FASTA format. Only A, T, G, C characters are used.</p>
-        </div>
-        <div id="ref-file" class="tab-panel">
-          <div class="file-drop" id="ref-drop">
-            <input type="file" name="ref_file" id="ref_file" accept=".fasta,.fa,.txt" onchange="showFileName(this,'ref-fname')">
-            <div class="file-icon">📂</div>
-            <div class="file-text">Drop <strong>.fasta</strong> or <strong>.txt</strong> file here, or click to browse</div>
-            <div class="file-name" id="ref-fname"></div>
-          </div>
-        </div>
-      </div>
 
-      <div class="form-group">
-        <label>Mutant DNA sequence <span>changed / variant</span></label>
-        <div class="input-tabs">
-          <button type="button" class="input-tab active" onclick="switchTab('mut','paste')">Paste sequence</button>
-          <button type="button" class="input-tab" onclick="switchTab('mut','file')">Upload file</button>
+        <div class="form-group">
+          <label for="protein_name">Protein name <span>for PDB and UniProt lookup</span></label>
+          <input type="text" id="protein_name" name="protein_name" placeholder="e.g. TP53, HLA-C, BRCA1" value="{{ protein_name or '' }}"/>
+          <p class="hint">Standard gene name used to fetch the 3D structure and protein annotation.</p>
         </div>
-        <div id="mut-paste" class="tab-panel active">
-          <textarea name="mut_dna" id="mut_dna" placeholder="ATGGATTTCCAGTTCAGGGCC...">{{ mut_dna or '' }}</textarea>
-        </div>
-        <div id="mut-file" class="tab-panel">
-          <div class="file-drop" id="mut-drop">
-            <input type="file" name="mut_file" id="mut_file" accept=".fasta,.fa,.txt" onchange="showFileName(this,'mut-fname')">
-            <div class="file-icon">📂</div>
-            <div class="file-text">Drop <strong>.fasta</strong> or <strong>.txt</strong> file here, or click to browse</div>
-            <div class="file-name" id="mut-fname"></div>
-          </div>
-        </div>
-      </div>
 
-      <div class="form-group">
-        <label for="protein_name">Protein name <span>used to search PDB and UniProt</span></label>
-        <input type="text" id="protein_name" name="protein_name" placeholder="e.g. TP53, HLA-C, BRCA1" value="{{ protein_name or '' }}"/>
-        <p class="hint">Enter the standard gene name for accurate 3D structure and annotation lookup.</p>
       </div>
 
       <button type="submit" class="btn-submit">🔬 Analyse Mutation →</button>
@@ -130,33 +90,5 @@
   </div>
 </main>
 <footer>DNA Mutation Analyser · Flask · BioPython · py3Dmol · Plotly</footer>
-<script>
-function switchTab(seq, mode) {
-  document.getElementById(seq+'-paste').classList.toggle('active', mode==='paste');
-  document.getElementById(seq+'-file').classList.toggle('active', mode==='file');
-  document.querySelectorAll(`[onclick*="switchTab('${seq}'"]`).forEach(t => {
-    t.classList.toggle('active', t.getAttribute('onclick').includes("'"+mode+"'"));
-  });
-}
-function showFileName(input, labelId) {
-  const label = document.getElementById(labelId);
-  if (input.files && input.files[0]) { label.textContent = '✅ ' + input.files[0].name; label.style.display = 'block'; }
-}
-['ref-drop','mut-drop'].forEach(id => {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('dragover'); });
-  el.addEventListener('dragleave', () => el.classList.remove('dragover'));
-  el.addEventListener('drop', () => el.classList.remove('dragover'));
-});
-function loadExample() {
-  switchTab('ref','paste'); switchTab('mut','paste');
-  const ref = 'ATGGATTTCCAGTTCAGGGCCAGCTACAGTGAAATCTGAGGCTCTTACTTCACTGAAGACCCAGGTCCAGATGAAGCTCCCAGAATGCCAGAGGCTGCTCCCCCCGTGGCCCCTGCACCAGCAGCTCCTACACCGGCGGCCCCTGCACCAGCCCCCTCCTGGCCCCTGTCATCTTCTGTCCCTTCCCAGAAAACCTACCAGGGCAGCTACGGTTTCCGTCTGGGCTTCTTGCATTCTGGGACAGCCAAGTCTGTGACTTGCACGTACTCCCCTGCCCTCAACAAGATGTTTTGCCAACTGGCCAAGACCTGCCCTGTGCAGCTGTGGGTTGATTCCACACCCCCGCCCGGCACCCGCGTCCGCGCCATGGCCATCTACAAGCAGTCACAGCACATGACGGAGGTTGTGAGGCGCTGCCCCCACCATGAGCGCTGCTCAGATAGCGATGGTCTGGCCCCTCCTCAGATTGCTTTGTTTCTTACTGGCTTGTCAGATGTTGGGATAGAGAGGATGGGCCAGCTACAACCAGCCAGTGTGGTGGTGCCCTATGAGCCGCCTGAGGTTGGCTCTGACTGTACCACCATCCACTACAACTACATGTGTAACAGTTCCTGCATGGGCGGCATGAACCGGAGGCCCATCCTCACCATCATCACACTGGAAGACTCCAGTGGTAATCTACTGGGACGGAACAGCTTTGAGGTGCGTGTTTGTGCCTGTCCTGGGAGAGACCGGCGCACAGAGGAAGAGAATCTCCGCAAGAAAGGGGAGCCTCACCACGAGCTGCCCCCAGGGAGCACTAAGCGAGCACTGCCCAACAACACCAGCTCCTCTCCCCAGCCAAAGAAGAAACCACTGGATGGAGAATATTTCACCCTTCAGATCCGTGGGCGTGAGCGCTTCGAGATGTTCCGAGAGCTGAATGAGGCCTTGGAACTCAAGCCTTGTGCCCTGTGCTTCATGGATGATTTGATGCTGTCCCCGGACGATATTGAACAATGGTTCACTGAAGACCCAGGTCCAGATGAAGCTCCC';
-  const mut = ref.substring(0,522) + 'C' + ref.substring(523);
-  document.getElementById('ref_dna').value = ref;
-  document.getElementById('mut_dna').value = mut;
-  document.getElementById('protein_name').value = 'TP53';
-}
-</script>
 </body>
 </html>
