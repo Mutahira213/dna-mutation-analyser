@@ -1,0 +1,5 @@
+flask>=2.3.0
+biopython>=1.81
+requests>=2.31.0
+plotly>=5.18.0
+pandas>=2.1.0

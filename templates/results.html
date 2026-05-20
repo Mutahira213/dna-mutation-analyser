@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Results — DNA Mutation Analyser</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://3dmol.org/build/3Dmol-min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #f0f4f8;
+      color: #1a2332;
+    }
+
+    header {
+      background: #1e3a5f;
+      color: white;
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-left { display: flex; align-items: center; gap: 14px; }
+
+    header .logo {
+      width: 36px; height: 36px;
+      background: #3a9bd5;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 700; color: white;
+    }
+
+    header h1 { font-size: 1.2rem; font-weight: 600; }
+    header p  { font-size: 0.78rem; color: #a8c4e0; margin-top: 1px; }
+
+    .btn-back {
+      background: rgba(255,255,255,0.12);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 7px;
+      padding: 8px 18px;
+      font-size: 0.84rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-back:hover { background: rgba(255,255,255,0.22); }
+
+    .page { max-width: 1200px; margin: 0 auto; padding: 30px 24px 50px; }
+
+    /* Summary banner */
+    .summary-banner {
+      background: white;
+      border-radius: 12px;
+      padding: 20px 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 12px rgba(30,58,95,0.08);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .banner-item { display: flex; flex-direction: column; gap: 3px; }
+    .banner-item .label { font-size: 0.74rem; color: #7a9ab8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .banner-item .value { font-size: 1rem; font-weight: 600; color: #1e3a5f; }
+    .banner-divider { width: 1px; height: 36px; background: #dce8f0; }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+    .badge-sub  { background: #fff3e0; color: #e65100; }
+    .badge-ins  { background: #e8f5e9; color: #2e7d32; }
+    .badge-del  { background: #fce4ec; color: #b71c1c; }
+
+    /* Grid layout */
+    .grid-top    { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+    .grid-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+    @media (max-width: 860px) {
+      .grid-top, .grid-bottom { grid-template-columns: 1fr; }
+    }
+
+    .panel {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(30,58,95,0.08);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      background: #1e3a5f;
+      color: white;
+      padding: 13px 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel-header .icon {
+      width: 22px; height: 22px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 5px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px;
+    }
+
+    .panel-body { padding: 20px; }
+
+    /* 3D viewer */
+    #viewer-container {
+      width: 100%;
+      height: 380px;
+      background: #0d1b2a;
+      border-radius: 8px;
+      position: relative;
+    }
+
+    .viewer-label {
+      position: absolute;
+      bottom: 10px; left: 12px;
+      background: rgba(0,0,0,0.55);
+      color: #a8c4e0;
+      font-size: 0.72rem;
+      padding: 4px 10px;
+      border-radius: 5px;
+      pointer-events: none;
+    }
+
+    .pdb-badge {
+      position: absolute;
+      top: 10px; right: 12px;
+      background: #3a9bd5;
+      color: white;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 5px;
+    }
+
+    /* Mutation table */
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    thead tr { background: #f0f6fb; }
+    thead th { padding: 10px 12px; text-align: left; font-weight: 600; color: #2c4a6e; font-size: 0.8rem; border-bottom: 2px solid #dce8f0; }
+    tbody tr { border-bottom: 1px solid #edf2f7; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #f7fafd; }
+    tbody td { padding: 10px 12px; color: #2c3e50; }
+
+    .mono { font-family: 'Courier New', monospace; font-weight: 600; }
+
+    /* Protein sequences */
+    .seq-compare { margin-top: 10px; }
+    .seq-row { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 8px; }
+    .seq-label { font-size: 0.74rem; font-weight: 600; color: #7a9ab8; min-width: 36px; margin-top: 3px; }
+    .seq-text {
+      font-family: 'Courier New', monospace;
+      font-size: 0.78rem;
+      color: #1a2332;
+      background: #f0f6fb;
+      border-radius: 6px;
+      padding: 8px 10px;
+      word-break: break-all;
+      line-height: 1.7;
+      flex: 1;
+    }
+
+    /* UniProt panel */
+    .info-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+      align-items: flex-start;
+    }
+    .info-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #7a9ab8;
+      min-width: 90px;
+      margin-top: 1px;
+    }
+    .info-value {
+      font-size: 0.88rem;
+      color: #1a2332;
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    /* Error/warning boxes */
+    .warn-box {
+      background: #fff8e1;
+      border: 1px solid #ffe082;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 0.83rem;
+      color: #795548;
+    }
+
+    /* Chart */
+    #mutation-chart { width: 100%; height: 260px; }
+
+    /* AA changes */
+    .aa-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 12px;
+      border-radius: 7px;
+      margin-bottom: 7px;
+      background: #f7fafd;
+      border: 1px solid #dce8f0;
+      font-size: 0.85rem;
+    }
+    .aa-pos { color: #7a9ab8; font-size: 0.78rem; }
+    .aa-change { font-family: monospace; font-weight: 700; color: #c0392b; font-size: 0.9rem; }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.78rem;
+      color: #8aabbf;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <div class="logo">D</div>
+    <div>
+      <h1>DNA Mutation Analyser</h1>
+      <p>Results for: {{ protein_name }}</p>
+    </div>
+  </div>
+  <a href="/" class="btn-back">← New Analysis</a>
+</header>
+
+<div class="page">
+
+  <!-- Summary banner -->
+  <div class="summary-banner">
+    <div class="banner-item">
+      <span class="label">Protein</span>
+      <span class="value">{{ protein_name }}</span>
+    </div>
+    <div class="banner-divider"></div>
+    <div class="banner-item">
+      <span class="label">Mutations found</span>
+      <span class="value">{{ mutations | length }}</span>
+    </div>
+    <div class="banner-divider"></div>
+    <div class="banner-item">
+      <span class="label">Sequence length</span>
+      <span class="value">{{ seq_length }} bp</span>
+    </div>
+    {% if pdb_id %}
+    <div class="banner-divider"></div>
+    <div class="banner-item">
+      <span class="label">PDB ID</span>
+      <span class="value">{{ pdb_id }}</span>
+    </div>
+    {% endif %}
+    {% if uniprot_info.organism %}
+    <div class="banner-divider"></div>
+    <div class="banner-item">
+      <span class="label">Organism</span>
+      <span class="value">{{ uniprot_info.organism }}</span>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Top row: 3D viewer + Mutation table -->
+  <div class="grid-top">
+
+    <!-- 3D Viewer -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="icon">3D</div>
+        3D Protein Structure
+      </div>
+      <div class="panel-body" style="padding: 16px;">
+        {% if pdb_structure %}
+        <div id="viewer-container">
+          <div class="viewer-label">Rotate · Zoom · Pan · Red = mutation site</div>
+          <div class="pdb-badge">{{ pdb_id }}</div>
+        </div>
+        {% elif pdb_error %}
+        <div class="warn-box">
+          <strong>3D structure unavailable</strong><br>
+          {{ pdb_error }}<br>
+          Check your internet connection or try a different protein name.
+        </div>
+        {% else %}
+        <div class="warn-box">No PDB structure found for "{{ protein_name }}". Try a more specific protein name.</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Mutation Table -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="icon">≡</div>
+        Mutation Summary
+      </div>
+      <div class="panel-body" style="padding: 0;">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Position</th>
+              <th>Type</th>
+              <th>Change</th>
+              <th>AA Change</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for m in mutations %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td class="mono">{{ m.position }}</td>
+              <td>
+                <span class="badge
+                  {% if m.type == 'substitution' %}badge-sub
+                  {% elif m.type == 'insertion' %}badge-ins
+                  {% else %}badge-del{% endif %}">
+                  {{ m.type }}
+                </span>
+              </td>
+              <td class="mono">{{ m.ref_base }} → {{ m.mut_base }}</td>
+              <td>{{ m.aa_change or '—' }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom row: Mutation chart + UniProt + Protein sequences -->
+  <div class="grid-bottom">
+
+    <!-- Mutation position chart -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="icon">↗</div>
+        Mutation Position Chart
+      </div>
+      <div class="panel-body">
+        <div id="mutation-chart"></div>
+      </div>
+    </div>
+
+    <!-- UniProt info + protein sequences -->
+    <div style="display:flex; flex-direction:column; gap:20px;">
+
+      <!-- UniProt -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="icon">i</div>
+          UniProt Protein Info
+        </div>
+        <div class="panel-body">
+          {% if uniprot_info %}
+          <div class="info-row">
+            <span class="info-label">Name</span>
+            <span class="info-value">{{ uniprot_info.name }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Function</span>
+            <span class="info-value">{{ uniprot_info.function }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Organism</span>
+            <span class="info-value"><em>{{ uniprot_info.organism }}</em></span>
+          </div>
+          <div class="info-row" style="margin-bottom:0">
+            <span class="info-label">Length</span>
+            <span class="info-value">{{ uniprot_info.length }} amino acids</span>
+          </div>
+          {% elif uniprot_error %}
+          <div class="warn-box"><strong>UniProt unavailable</strong><br>{{ uniprot_error }}</div>
+          {% else %}
+          <div class="warn-box">No UniProt data found for "{{ protein_name }}".</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Amino acid changes -->
+      {% if aa_changes %}
+      <div class="panel">
+        <div class="panel-header">
+          <div class="icon">AA</div>
+          Amino Acid Changes
+        </div>
+        <div class="panel-body">
+          {% for ch in aa_changes %}
+          <div class="aa-row">
+            <span class="aa-pos">Position {{ ch.position }}</span>
+            <span class="aa-change">{{ ch.change }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+
+  <!-- Protein sequence comparison -->
+  {% if ref_protein or mut_protein %}
+  <div class="panel" style="margin-top:20px;">
+    <div class="panel-header">
+      <div class="icon">~</div>
+      Translated Protein Sequences
+    </div>
+    <div class="panel-body">
+      <div class="seq-compare">
+        <div class="seq-row">
+          <span class="seq-label">REF</span>
+          <div class="seq-text">{{ ref_protein or 'Translation failed' }}</div>
+        </div>
+        <div class="seq-row">
+          <span class="seq-label">MUT</span>
+          <div class="seq-text">{{ mut_protein or 'Translation failed' }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+
+<footer>DNA Mutation Analyser · Flask · BioPython · py3Dmol · Plotly</footer>
+
+<!-- 3D Viewer init -->
+{% if pdb_structure %}
+<script>
+  $(document).ready(function() {
+    let viewer = $3Dmol.createViewer(
+      document.getElementById('viewer-container'),
+      { backgroundColor: '#0d1b2a' }
+    );
+
+    let pdbData = {{ pdb_structure | tojson }};
+    viewer.addModel(pdbData, "pdb");
+
+    viewer.setStyle({}, {
+      cartoon: { color: '#4a9fd4', opacity: 0.9 }
+    });
+
+    // Highlight mutated residues in red
+    {% for m in mutations %}
+    {% if m.position %}
+    viewer.setStyle(
+      { resi: {{ m.position }} },
+      { cartoon: { color: '#e74c3c' }, sphere: { radius: 0.6, color: '#e74c3c' } }
+    );
+    {% endif %}
+    {% endfor %}
+
+    viewer.zoomTo();
+    viewer.render();
+    viewer.zoom(1.1, 500);
+  });
+</script>
+{% endif %}
+
+<!-- Plotly mutation chart -->
+<script>
+  var chartData = {{ chart_data | safe }};
+  var positions = chartData.positions;
+  var types = chartData.types;
+  var labels = chartData.labels;
+  var seqLen = chartData.seq_length;
+
+  var colorMap = { substitution: '#e67e22', insertion: '#27ae60', deletion: '#e74c3c' };
+  var colors = types.map(t => colorMap[t] || '#3a9bd5');
+
+  var trace = {
+    x: positions,
+    y: Array(positions.length).fill(1),
+    mode: 'markers+text',
+    type: 'scatter',
+    marker: { size: 14, color: colors, symbol: 'diamond', line: { width: 2, color: 'white' } },
+    text: labels,
+    textposition: 'top center',
+    textfont: { size: 11, family: 'Courier New' },
+    hovertemplate: 'Position: %{x}<br>Change: %{text}<extra></extra>'
+  };
+
+  var layout = {
+    xaxis: {
+      title: 'Position in DNA sequence',
+      range: [0, seqLen + 5],
+      gridcolor: '#edf2f7',
+      titlefont: { size: 12, color: '#5a7a99' }
+    },
+    yaxis: { visible: false, range: [0, 2.5] },
+    margin: { l: 30, r: 20, t: 20, b: 50 },
+    plot_bgcolor: '#f7fafd',
+    paper_bgcolor: 'white',
+    showlegend: false,
+    shapes: [{
+      type: 'line',
+      x0: 0, x1: seqLen,
+      y0: 1, y1: 1,
+      line: { color: '#c8d8e8', width: 2, dash: 'dot' }
+    }]
+  };
+
+  Plotly.newPlot('mutation-chart', [trace], layout, { responsive: true, displayModeBar: false });
+</script>
+
+</body>
+</html>
