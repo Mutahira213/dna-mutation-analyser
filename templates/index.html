@@ -34,6 +34,13 @@
     .error-box p::before { content: "⚠ "; }
     .hint { font-size: 0.79rem; color: #7a9ab8; margin-top: 6px; }
 
+    .fasta-upload { margin-top: 8px; display: flex; align-items: center; gap: 10px; }
+    .fasta-btn { display: inline-flex; align-items: center; gap: 6px; background: #eef5fb; border: 1.5px dashed #3a9bd5; border-radius: 7px; padding: 7px 14px; font-size: 0.8rem; font-weight: 600; color: #2a6090; cursor: pointer; transition: background 0.2s, border-color 0.2s; white-space: nowrap; }
+    .fasta-btn:hover { background: #daeef9; border-color: #1e7bb8; }
+    .fasta-btn svg { flex-shrink: 0; }
+    .fasta-filename { font-size: 0.78rem; color: #5a7a99; font-style: italic; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 160px; }
+    input[type="file"].fasta-input { display: none; }
+
     .btn-submit { width: 100%; background: #1e3a5f; color: white; border: none; border-radius: 10px; padding: 15px; font-size: 1rem; font-weight: 700; cursor: pointer; letter-spacing: 0.3px; transition: background 0.2s, transform 0.1s; }
     .btn-submit:hover { background: #2a5080; }
     .btn-submit:active { transform: scale(0.99); }
@@ -68,12 +75,28 @@
         <div class="form-group">
           <label for="ref_dna">Reference DNA sequence <span>normal / wild-type</span></label>
           <textarea name="ref_dna" id="ref_dna" placeholder="ATGCGTAAAGGTCCAATCGTAGCT...&#10;&#10;Use only A, T, G, C characters.">{{ ref_dna or '' }}</textarea>
+          <div class="fasta-upload">
+            <label class="fasta-btn" for="ref_fasta_file">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Upload FASTA
+            </label>
+            <input type="file" id="ref_fasta_file" class="fasta-input" accept=".fasta,.fa,.fna,.txt" onchange="loadFasta(this,'ref_dna','ref_fasta_name')"/>
+            <span class="fasta-filename" id="ref_fasta_name">No file chosen</span>
+          </div>
           <p class="hint">Wild-type / unmodified sequence. A, T, G, C only.</p>
         </div>
 
         <div class="form-group">
           <label for="mut_dna">Mutant DNA sequence <span>changed / variant</span></label>
           <textarea name="mut_dna" id="mut_dna" placeholder="ATGCATAAAGGTCCAATCGTAGCT...&#10;&#10;Sequence with the mutation applied.">{{ mut_dna or '' }}</textarea>
+          <div class="fasta-upload">
+            <label class="fasta-btn" for="mut_fasta_file">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Upload FASTA
+            </label>
+            <input type="file" id="mut_fasta_file" class="fasta-input" accept=".fasta,.fa,.fna,.txt" onchange="loadFasta(this,'mut_dna','mut_fasta_name')"/>
+            <span class="fasta-filename" id="mut_fasta_name">No file chosen</span>
+          </div>
           <p class="hint">Modified sequence with the mutation applied.</p>
         </div>
 
@@ -90,5 +113,24 @@
   </div>
 </main>
 <footer>DNA Mutation Analyser · Flask · BioPython · py3Dmol · Plotly</footer>
+<script>
+function loadFasta(input, textareaId, nameSpanId) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById(nameSpanId).textContent = file.name;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const text = e.target.result;
+    // Strip FASTA header lines (starting with > or ;) and join sequence lines
+    const seq = text.split('\n')
+      .filter(line => line.trim() && !line.startsWith('>') && !line.startsWith(';'))
+      .join('')
+      .replace(/\s+/g, '')
+      .toUpperCase();
+    document.getElementById(textareaId).value = seq;
+  };
+  reader.readAsText(file);
+}
+</script>
 </body>
 </html>
